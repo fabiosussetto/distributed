@@ -4,7 +4,7 @@ from kombu import Connection, Queue, Exchange, common
 RABBIT_URL = os.environ['RABBIT_URL']
 
 events_exchange = Exchange('broadcast', type='fanout', durable=True)
-events_queue = Queue(name=common.uuid(), exchange=events_exchange)
+events_queue = Queue(name=common.uuid(), exchange=events_exchange, exclusive=False, auto_delete=False)
 
 
 def process_msg(body, message):
