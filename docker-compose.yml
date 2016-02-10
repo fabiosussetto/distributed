@@ -1,0 +1,7 @@
+version: '2'
+services:
+  broker:
+    image: rabbitmq:3.6.0-management
+    ports:
+     - "5672:5672"
+     - "15672:15672"
