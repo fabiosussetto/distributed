@@ -1,12 +1,20 @@
-var jackrabbit = require('jackrabbit');
-var rabbit = jackrabbit(process.env.RABBIT_URL);
+var rabbit = require('./rabbit')
+var models = require('./models')
 
-var exchange = rabbit.fanout('broadcast');
-var eventsQueue = exchange.queue({ durable: true, exclusive: false });
+var exchange = rabbit.fanout('broadcast')
+var eventsQueue = exchange.queue({ durable: true, exclusive: false })
 
+eventsQueue.consume(onMessage, { noAck: true })
 
-eventsQueue.consume(onMessage, { noAck: true });
+function onMessage(msg, ack) {
+  console.log('received:', msg);
 
-function onMessage(data, ack) {
-  console.log('received:', data);
+  switch (msg.type) {
+    case 'auth:user:created':
+      models.subscriber.create({
+        userId: msg.data.user.id
+      })
+      break
+  }
+
 }

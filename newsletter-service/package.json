@@ -4,11 +4,22 @@
   "description": "",
   "main": "worker.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start:api": "node api.js",
+    "start:worker": "node worker.js",
+    "start": "concurrent \"npm run start:api\" \"npm run start:worker\""
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "jackrabbit": "^4.3.0"
+    "express": "^4.13.4",
+    "jackrabbit": "^4.3.0",
+    "pg": "^4.4.4",
+    "pg-hstore": "^2.3.2",
+    "response-time": "^2.3.1",
+    "sequelize": "^3.19.2"
+  },
+  "devDependencies": {
+    "concurrently": "^1.0.0"
   }
 }
