@@ -5,8 +5,8 @@
   "main": "worker.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start:api": "node api.js",
-    "start:worker": "node worker.js",
+    "start:api": "node --es_staging api.js",
+    "start:worker": "node --es_staging worker.js",
     "start": "concurrent \"npm run start:api\" \"npm run start:worker\""
   },
   "author": "",

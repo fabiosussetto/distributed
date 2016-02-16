@@ -1,20 +1,17 @@
 import os
 from kombu import Connection, Queue
 
-from .api import db, User
-
 RABBIT_URL = os.environ.get('RABBIT_URL', 'amqp://192.168.99.101:5672')
 
-rpc_queue = Queue(name='auth_rpc', durable=False, no_ack=True)
+rpc_queue = Queue(name='permission_rpc', durable=False, no_ack=True)
 
 
-def is_logged(data):
-    print('is_logged called!', data)
+def check_permission(data):
+    print('check_permission called!', data)
     return dict(should_continue=True)
 
-
 actions = {
-    'isLogged': is_logged
+    'check': check_permission
 }
 
 
@@ -43,3 +40,15 @@ with Connection(RABBIT_URL) as conn:
     with conn.Consumer(rpc_queue, callbacks=[process_msg]) as consumer:
         while True:
             conn.drain_events()
+
+    # def process_msg(body, message):
+    #     print('Received: {}'.format(body))
+    #     if body.get('event') == 'newsletter:beforeFetch':
+    #         data = dict(allowed=True)
+    #
+    #         producer.publish(data, routing_key=message.properties['reply_to'],
+    #                          correlation_id=message.properties.get('correlation_id'))
+    #
+    # with conn.Consumer(rpc_queue, callbacks=[process_msg]) as consumer:
+    #     while True:
+    #         conn.drain_events()
